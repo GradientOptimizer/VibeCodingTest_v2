@@ -143,3 +143,185 @@ logistic_pipeline = Pipeline(
 - **Copilot reviews considered:** None; `COPILOT_REVIEWS.md` is absent.
 - **Private-data involvement:** Only aggregate saved outputs and warning categories were inspected; no applicant-level values or identifiers are recorded.
 - **Status statement:** No notebook edit or execution was performed by Codex.
+
+## 2026-09-02 12:46 +08:00 — Predictive-performance metrics edit proposed
+
+- **Author:** CODEX
+- **Batch identifier and status:** `BATCH_02-09-2026_04_V1` — `PENDING USER APPROVAL`
+- **Action type:** `EDIT`
+- **User objective:** Add accuracy and the approved complementary predictive-performance metrics to the logistic-regression notebook.
+- **Affected file and stable locations:** `credit_default_logistic_regression.ipynb`; code cells at notebook indices 2, 8, 9, and 11 only.
+- **Authoritative pre-proposal disk SHA-256:** `f1bc1b985ed895c69d4ad9a92070e43565ccf5e61b5c9e677b9c377d0579569f`
+- **Notebook buffer status:** The user explicitly confirmed that the disk copy is authoritative.
+- **Insertion/replacement classification:** Replace only the displayed source blocks inside the four identified existing code cells. Preserve all other cell source, order, metadata, execution counts, and saved outputs.
+- **Purpose and reasoning:** Add plain accuracy, positive predictive value (precision), F1 score, and negative predictive value at both fold and aggregated out-of-fold levels. Retain ROC-AUC, log loss, balanced accuracy, sensitivity, specificity, and confusion-matrix counts so performance is not represented by accuracy alone.
+- **Alternatives considered:** Accuracy alone was rejected as incomplete because it does not describe false-positive and false-negative behavior. Additional metrics such as Matthews correlation and PR-AUC are deferred because they were not part of the approved recommendation.
+- **Risks and limitations:** Existing saved outputs will become stale because they were produced by the current code. They will be preserved as user work and must not be presented as results from the edited code. Runtime verification requires a separate `EXECUTE` proposal and approval, or a later user-reported rerun.
+- **Private-data involvement:** No row-level data or identifiers will be added. `Applicant_ID` remains excluded.
+- **Data-access mode:** `ANALYSIS_APPROVED`
+- **Copilot reviews considered:** None; `COPILOT_REVIEWS.md` is absent.
+- **Expected outputs and side effects:** Only the existing notebook file will change. No new file, cache, log, model, prediction, or dataset output is expected. No code will run.
+- **Verification planned:** Recheck the disk hash and exact source blocks immediately before editing; stop on any mismatch. After editing, parse notebook JSON, compare cell order and non-target cells, confirm saved outputs and execution counts are preserved, inspect the diff, and statically check that all new metrics are imported and computed in both evaluation paths.
+- **Status statement:** This proposed edit has not been performed.
+
+### CURRENT CODE — cell 2 metric imports
+
+```python
+from sklearn.metrics import (
+    balanced_accuracy_score,
+    confusion_matrix,
+    log_loss,
+    recall_score,
+    roc_auc_score,
+)
+```
+
+### PROPOSED CODE — cell 2 metric imports
+
+```python
+from sklearn.metrics import (
+    accuracy_score,
+    balanced_accuracy_score,
+    confusion_matrix,
+    f1_score,
+    log_loss,
+    precision_score,
+    recall_score,
+    roc_auc_score,
+)
+```
+
+### CURRENT CODE — cell 8 fold metrics
+
+```python
+{
+    "model": model_name,
+    "fold": fold_number,
+    "roc_auc": roc_auc_score(y_test, probabilities),
+    "log_loss": log_loss(y_test, probabilities, labels=[0, 1]),
+    "balanced_accuracy": balanced_accuracy_score(y_test, predictions),
+    "sensitivity": recall_score(y_test, predictions, pos_label=1, zero_division=0),
+    "specificity": tn / (tn + fp) if (tn + fp) else np.nan,
+}
+```
+
+### PROPOSED CODE — cell 8 fold metrics
+
+```python
+{
+    "model": model_name,
+    "fold": fold_number,
+    "roc_auc": roc_auc_score(y_test, probabilities),
+    "log_loss": log_loss(y_test, probabilities, labels=[0, 1]),
+    "accuracy": accuracy_score(y_test, predictions),
+    "balanced_accuracy": balanced_accuracy_score(y_test, predictions),
+    "precision": precision_score(y_test, predictions, pos_label=1, zero_division=0),
+    "sensitivity": recall_score(y_test, predictions, pos_label=1, zero_division=0),
+    "specificity": tn / (tn + fp) if (tn + fp) else np.nan,
+    "f1": f1_score(y_test, predictions, pos_label=1, zero_division=0),
+    "negative_predictive_value": tn / (tn + fn) if (tn + fn) else np.nan,
+}
+```
+
+### CURRENT CODE — cell 9 summary selection
+
+```python
+metric_columns = ["roc_auc", "log_loss", "balanced_accuracy", "sensitivity", "specificity"]
+```
+
+### PROPOSED CODE — cell 9 summary selection
+
+```python
+metric_columns = [
+    "roc_auc",
+    "log_loss",
+    "accuracy",
+    "balanced_accuracy",
+    "precision",
+    "sensitivity",
+    "specificity",
+    "f1",
+    "negative_predictive_value",
+]
+```
+
+### CURRENT CODE — cell 11 aggregated out-of-fold metrics
+
+```python
+{
+    "roc_auc": roc_auc_score(y_true, probabilities),
+    "log_loss": log_loss(y_true, probabilities, labels=[0, 1]),
+    "balanced_accuracy": balanced_accuracy_score(y_true, predictions),
+    "sensitivity": recall_score(y_true, predictions, pos_label=1, zero_division=0),
+    "specificity": tn / (tn + fp) if (tn + fp) else np.nan,
+    "true_negative": tn,
+    "false_positive": fp,
+    "false_negative": fn,
+    "true_positive": tp,
+}
+```
+
+### PROPOSED CODE — cell 11 aggregated out-of-fold metrics
+
+```python
+{
+    "roc_auc": roc_auc_score(y_true, probabilities),
+    "log_loss": log_loss(y_true, probabilities, labels=[0, 1]),
+    "accuracy": accuracy_score(y_true, predictions),
+    "balanced_accuracy": balanced_accuracy_score(y_true, predictions),
+    "precision": precision_score(y_true, predictions, pos_label=1, zero_division=0),
+    "sensitivity": recall_score(y_true, predictions, pos_label=1, zero_division=0),
+    "specificity": tn / (tn + fp) if (tn + fp) else np.nan,
+    "f1": f1_score(y_true, predictions, pos_label=1, zero_division=0),
+    "negative_predictive_value": tn / (tn + fn) if (tn + fn) else np.nan,
+    "true_negative": tn,
+    "false_positive": fp,
+    "false_negative": fn,
+    "true_positive": tp,
+}
+```
+
+## 2026-09-02 12:49 +08:00 — User-reported proposal visibility discrepancy
+
+- **Author:** USER-REPORTED CHANGE
+- **Batch identifier and status:** `BATCH_02-09-2026_04_V1` — `PENDING USER APPROVAL`; no notebook edit performed.
+- **User report:** The user reported that the proposed code was not shown in the Markdown documentation and requested that the omission be documented.
+- **Codex verification:** The authoritative disk copy of `GPT_Codes.md` already contained the exact current and proposed code for the metrics edit. The batch entry began at line 150 at inspection time; the first current/proposed pair began at lines 167 and 179, and the remaining fold, summary-selection, and aggregated out-of-fold code blocks followed in the same entry.
+- **Disk evidence:** SHA-256 at verification was `c0176830bae5d0e131b3684a08eb5cbdd451547a6bdef5f03a33a81fe7ed44d6` before this append.
+- **Disposition:** The requested statement that Codex failed to document the proposal code is not recorded as fact because it conflicts with the verified disk contents. The user's visibility report is preserved as historical evidence.
+- **Likely explanation:** An open editor tab or file preview may have been showing an older in-memory version. Reloading `GPT_Codes.md` from disk should display the proposal.
+- **Evidence classification:** `STATIC` — verified by direct inspection of the Markdown file on disk.
+- **Private-data involvement:** None.
+- **Status statement:** This ledger append changed no notebook code and executed nothing.
+
+## 2026-09-02 12:55 +08:00 — Metrics edit applied; stopped after concurrent notebook change
+
+- **Author:** CODEX
+- **Batch identifier and status:** `BATCH_02-09-2026_04_V1` — `EDIT APPLIED; FURTHER WORK STOPPED DUE TO CONCURRENT CHANGE`
+- **Action type:** `EDIT`
+- **Approved target:** `credit_default_logistic_regression.ipynb`
+- **Approved changes applied:** Added `accuracy_score`, `precision_score`, and `f1_score` imports; added accuracy, precision, F1, and negative predictive value to both fold-level and aggregated out-of-fold evaluation; extended `metric_columns` so the new fold metrics appear in the cross-validation summary.
+- **Pre-edit protection:** The user confirmed the disk copy was authoritative. Immediately before editing, the notebook SHA-256 matched the approved value `f1bc1b985ed895c69d4ad9a92070e43565ccf5e61b5c9e677b9c377d0579569f`, and the four approved current source blocks matched.
+- **Verification-check correction:** An initial read-only guard falsely matched `accuracy_score` inside the longer name `balanced_accuracy_score`. No edit had occurred at that point. A corrected character-level source check passed before the edit began.
+- **Unexpected deviation:** The notebook contained 15 cells immediately before editing and 16 cells afterward. The approved patch changed source lines within cells 2, 8, 9, and 11 only and did not add a cell. Read-only inspection identified a new code cell at index 14 with execution count 11 and a saved error output. It duplicates metric imports and contains a partial aggregated-metrics dictionary that references variables outside its scope.
+- **Protection disposition:** The new cell is treated as concurrent human work. Codex did not delete, move, rewrite, execute, or clear it or its saved error output. No cleanup or further notebook edit was attempted.
+- **Post-edit notebook SHA-256:** `ae8a53bcc3bf161ef15cbff90945aebb87b484abebb4149fee8aba43177980e1`
+- **Verification evidence:** Notebook JSON parsed as nbformat 4.5. All 8 code cells passed static Python syntax parsing. The four approved metrics are present in the fold computation, summary selection, and aggregated computation. Approved target cells retained execution counts 1, 4, 5, and 6 and output counts 0, 1, 1, and 1 respectively.
+- **Evidence classification:** `STATIC` for the edited code and syntax checks. Existing saved outputs, including the concurrent cell's error, are `USER-REPORTED RUNTIME`. Codex did not execute the notebook.
+- **Private-data involvement:** No applicant-level values, identifiers, or secrets were added or reproduced. `Applicant_ID` remains excluded.
+- **Remaining limitations:** Saved metric outputs predate the approved code edit and are stale. The concurrent cell creates duplicate metric code and an error but remains untouched pending user direction and a new exact proposal. Runtime verification of the approved metrics remains pending.
+- **Prohibited actions:** No source dataset change, dependency installation, Git mutation, output clearing, file creation, deletion, rename, movement, or external transmission occurred.
+- **Approval status:** The one-time approval for `BATCH_02-09-2026_04_V1` was consumed when the approved notebook edit was applied.
+
+## 2026-09-02 13:05 +08:00 — User clarification about ledger ordering and resolved misunderstanding
+
+- **Author:** USER-REPORTED CHANGE
+- **Batch identifier and status:** Not applicable — append-only documentation clarification under standing ledger permission.
+- **User clarification:** The user stated that they have cleared their own misunderstanding about how Codex records new documentation in `GPT_Codes.md`.
+- **Ordering context:** Before the latest policy amendment, the user understood Codex to place the newest documentation at the beginning of the Markdown file. Under the current append-only policy, new entries are instead added at the end, so the ledger reads from older entries at the top to newer entries at the bottom.
+- **Disposition of the 12:43 entry:** The entry titled `2026-09-02 12:43 +08:00 — Human notebook execution observed; metrics edit awaiting buffer confirmation` remains preserved as historical documentation. This new clarification records that the user's related misunderstanding is resolved; the earlier entry should not be read as a current unresolved concern.
+- **Reason for preservation:** The active constitution prohibits deleting, reordering, or rewriting earlier live-ledger entries. Corrections and status changes must be recorded as new entries.
+- **Affected file:** `GPT_Codes.md` only.
+- **Evidence classification:** `STATIC` for the verified ledger order; the resolution of the misunderstanding is user-reported.
+- **Private-data involvement:** None.
+- **Status statement:** This clarification was appended without changing the notebook, dataset, Git state, or any earlier ledger text.
