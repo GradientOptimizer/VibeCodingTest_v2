@@ -10,3 +10,4 @@ Create a brief user's manual, the user's manual should be about being able to us
 Add another explicit command for DAILY HUMAN-READABLE WORD REPORT end-of-day report where codex immediately uploads the word document in the current workspace in a single explicit command. 
 The end-of-day report should have the documentations of GPT_Codes.md but made human readable, the codes should be included.
 Lastly, create a brief user's manual, the user's manual should be about being able to use the AI setup properly. Give me the word document. 
+The codes documented by Codex does not have proper human readable comments explaing its code and it should be easily copypastable by the user on what line to add it or what cell block in an ipynb file. 
