@@ -79,6 +79,23 @@ logistic_pipeline = Pipeline(
 - **Prohibited actions not included:** No execution, dependency installation, dataset change, Git staging or commit, external transmission, overwrite, directory creation, deletion, rename, or movement.
 - **Status statement:** The proposed upload has not been performed.
 
+## 2026-09-02 13:24 +08:00 — Final Word report workspace upload completed
+
+- **Author:** CODEX
+- **Batch identifier and status:** `BATCH_02-09-2026_05_V1` — `COMPLETED`
+- **Action type:** `UPLOAD`
+- **Affected target:** `AI_Project_Report_2026-09-02.docx`
+- **What changed and why:** The exact previously delivered final Word report was added to the repository root because the user could not access the temporary delivery link.
+- **Delivered and destination SHA-256:** `804a9b00b36a4fbd8b6e1f7f9848f4a12bae7a6b2ad09d91538fda1f05c5d71e`
+- **Destination size:** 7,130 bytes.
+- **Verification evidence:** Immediately before upload, the source existed with the approved checksum, the repository root existed and was not a reparse point, and the target was absent. Immediately after upload, the destination checksum matched. The workspace copy was opened as an Office ZIP package, all required core parts were present, and all 11 required report sections appeared in numbered order.
+- **Evidence classification:** `AI-VERIFIED RUNTIME` for the approved file upload, checksum verification, and document-structure validation. Model performance inside the report remains `USER-REPORTED RUNTIME`.
+- **Private-data involvement:** The report contains aggregate financial-model results and task-relevant column names but no applicant identifiers, row-level records, or secrets.
+- **Git observation:** Before upload, `GPT_Codes.md` was already modified. After upload, Git additionally showed `?? AI_Project_Report_2026-09-02.docx`. Codex did not stage or commit either file.
+- **Prohibited actions:** No existing file was overwritten or changed as part of the upload. The report was not executed. No notebook cell was run, no dataset was changed, no dependency was installed, and no Git or external action was performed.
+- **Approval status:** The one-time approval for `BATCH_02-09-2026_05_V1` was consumed.
+- **Post-completion ledger note:** This completion entry was appended afterward under Codex's standing permission for the existing live ledger; it is separate from the completed one-file upload.
+
 ## 2026-09-02 12:30 +08:00 — Initial live-ledger upload completed
 
 - **Author:** CODEX
@@ -325,3 +342,47 @@ metric_columns = [
 - **Evidence classification:** `STATIC` for the verified ledger order; the resolution of the misunderstanding is user-reported.
 - **Private-data involvement:** None.
 - **Status statement:** This clarification was appended without changing the notebook, dataset, Git state, or any earlier ledger text.
+
+## 2026-09-02 13:16 +08:00 — Session completion summary
+
+- **Author:** CODEX
+- **Batch identifiers and status:** `BATCH_02-09-2026_02_V1` completed; `BATCH_02-09-2026_03_V1` completed; `BATCH_02-09-2026_04_V1` applied and consumed, with its concurrent-change deviation later resolved by the user in the saved notebook.
+- **User objective:** Build and document a predictive credit-default model from the workspace data, excluding `Applicant_ID`, and add predictive-performance metrics.
+- **Files and stable locations:**
+  - `credit_risk_screening.csv` — original source dataset; preserved unchanged by Codex.
+  - `credit_default_logistic_regression.ipynb` — logistic-regression workflow, saved runtime outputs, 15 cells including 7 executed code cells, and no saved error output at session close.
+  - `GPT_Codes.md` — append-only implementation ledger.
+  - `COPILOT_REVIEWS.md` — user-created file containing a statement that Copilot was unable to provide useful review; no advisory recommendation was present.
+- **Method and decisions:** Binary `Defaulted` was modeled with L2-regularized logistic regression rather than ordinary least-squares regression. `Applicant_ID` was excluded. Median imputation and standardization occur inside repeated stratified cross-validation folds. The model is compared with a prior-probability baseline.
+- **Metrics implemented:** ROC-AUC, log loss, accuracy, balanced accuracy, precision, sensitivity, specificity, F1, negative predictive value, and confusion-matrix counts.
+- **Saved runtime results:** The logistic model's saved aggregated out-of-fold results report ROC-AUC 1.000, log loss 0.088, accuracy 1.000, balanced accuracy 1.000, precision 1.000, sensitivity 1.000, specificity 1.000, F1 1.000, negative predictive value 1.000, 25 true negatives, 25 true positives, and no false positives or false negatives. Across repeated folds, saved mean accuracy is 0.997 with standard deviation 0.017. The prior-probability baseline reports ROC-AUC 0.500, log loss 0.693, and accuracy 0.500.
+- **Coefficient output:** Saved final-fit results report standardized coefficients of -1.759 for `Annual_Income` and 1.910 for `Debt_to_Income_Ratio`, corresponding to exploratory odds ratios of 0.172 and 6.751 per one-standard-deviation increase, conditional on the other feature.
+- **Evidence classification:** `USER-REPORTED RUNTIME` for saved notebook outputs, because the user executed and saved the notebook. `STATIC` for Codex's source and methodology review. Codex did not execute the model.
+- **Copilot reconciliation:** No usable Copilot review or material recommendation was present. The user's statement in `COPILOT_REVIEWS.md` is recorded as `USER-DENOUNCED`; it did not influence implementation.
+- **Data handling:** `ANALYSIS_APPROVED`. Financial fields were used only for the requested analysis. `Applicant_ID` remained excluded from modeling and persistent result displays. No source row or direct identifier is reproduced here.
+- **Git state observed before this append:** Clean working tree on branch `main` at commit `4af81dc0c09338510caaf946bdcfaefd1888c708`, whose subject is `Copilot documentation written by user`. The model and ledger were present in earlier user commits `900ecf5` and `d98cccf`. Codex performed no Git mutation.
+- **Problems, risks, and limitations:** The dataset has only 50 observations. Perfect aggregated predictions warrant caution and do not establish external generalization, fairness, calibration, causality, or deployment readiness. Saved output includes a scikit-learn deprecation warning for the explicit `penalty="l2"` argument; compatibility cleanup remains optional future work. Repeated-fold percentiles are not formal confidence intervals.
+- **Pending work:** None required for the user's stated session objective. Optional future work includes external validation on substantially more representative data, calibration assessment, threshold selection based on decision costs, compatibility cleanup, and formal fairness/governance review.
+- **Session status:** User stated that the session is complete. No notebook execution, dependency installation, dataset mutation, Git mutation, or external write was performed by Codex while producing this summary.
+
+## 2026-09-02 13:23 +08:00 — Final Word report workspace upload proposed
+
+- **Author:** CODEX
+- **Batch identifier and status:** `BATCH_02-09-2026_05_V1` — `PENDING USER APPROVAL`
+- **Action type:** `UPLOAD`
+- **User objective:** Place the completed final Word summary report in the repository workspace because the temporary delivery link was not usable for the user.
+- **Delivered artifact:** `AI_Project_Report_2026-09-02.docx`
+- **Delivered size:** 7,130 bytes.
+- **Delivered SHA-256:** `804a9b00b36a4fbd8b6e1f7f9848f4a12bae7a6b2ad09d91538fda1f05c5d71e`
+- **Exact target:** `C:\Jan Bush Files\Coding_Miscellaneous\GitHub\VibeCodingTest_v2\AI_Project_Report_2026-09-02.docx`
+- **Current target state:** The repository root exists, is not a reparse point, and the target file does not exist.
+- **Proposed content:** Add one new file byte-for-byte identical to the validated, delivered Word artifact identified by the checksum above.
+- **Purpose and reasoning:** Make the final human-readable session report directly accessible inside the user's workspace while preserving the authoritative Markdown records.
+- **Discovery or automatic behavior:** The report may be discovered, indexed, or previewed by the editor, operating system, or Git. Adding it does not execute notebook code, macros, or another program; the generated report contains no macros.
+- **Expected project effects:** Git will show one new untracked Word document in addition to the already modified `GPT_Codes.md`. No existing file will change as part of the upload.
+- **Private-data involvement:** The report includes aggregate financial-model results and task-relevant column names. It contains no applicant identifiers, row-level records, or secrets.
+- **Verification planned:** Immediately before upload, confirm source existence and checksum, parent and target conditions, and absence of path indirection. Add exactly one file, confirm the destination size and checksum, validate the Office package structure, and inspect Git status.
+- **Risks and limitations:** The report is a derived presentation layer and does not replace `GPT_Codes.md`, `COPILOT_REVIEWS.md`, the notebook, dataset, or Git history. Saved performance results remain `USER-REPORTED RUNTIME` and preliminary because the dataset has only 50 observations.
+- **Expected generated files, caches, and logs:** None beyond the one approved Word document.
+- **Prohibited actions not included:** No overwrite, directory creation, archive extraction, report execution, notebook execution, dependency installation, dataset modification, Git staging or commit, external transmission, deletion, rename, or movement.
+- **Status statement:** The proposed upload has not been performed.
